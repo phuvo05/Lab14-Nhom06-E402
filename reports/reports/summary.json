@@ -1,0 +1,80 @@
+{
+  "v1_summary": {
+    "metadata": {
+      "version": "Agent_V1_Base",
+      "total": 50,
+      "passed": 49,
+      "failed": 1,
+      "pass_rate": 0.98,
+      "timestamp": "2026-04-21 10:17:57",
+      "dataset_size": 50
+    },
+    "metrics": {
+      "avg_score": 4.064,
+      "avg_faithfulness": 0.8916,
+      "avg_relevancy": 0.9536,
+      "hit_rate": 0.66,
+      "mrr": 0.4797,
+      "agreement_rate": 0.8036,
+      "avg_latency_ms": 8496.18
+    },
+    "cost_report": {
+      "total_cost": 0.091448,
+      "total_tokens": 0,
+      "cost_per_eval": 0.001829,
+      "tokens_per_eval": 0.0,
+      "error_count": 0
+    }
+  },
+  "v2_summary": {
+    "metadata": {
+      "version": "Agent_V2_Optimized",
+      "total": 50,
+      "passed": 49,
+      "failed": 1,
+      "pass_rate": 0.98,
+      "timestamp": "2026-04-21 10:25:07",
+      "dataset_size": 50
+    },
+    "metrics": {
+      "avg_score": 4.0266,
+      "avg_faithfulness": 0.8728,
+      "avg_relevancy": 0.9466,
+      "hit_rate": 0.66,
+      "mrr": 0.4897,
+      "agreement_rate": 0.8104,
+      "avg_latency_ms": 8450.27
+    },
+    "cost_report": {
+      "total_cost": 0.088688,
+      "total_tokens": 0,
+      "cost_per_eval": 0.001774,
+      "tokens_per_eval": 0.0,
+      "error_count": 0
+    }
+  },
+  "gate_decision": {
+    "decision": "BLOCK",
+    "message": "Update fails quality thresholds. RELEASE BLOCKED.",
+    "delta_score": -0.0374,
+    "delta_hit_rate": 0.0,
+    "agreement_rate": 0.8104,
+    "thresholds": {
+      "score_delta": {
+        "APPROVE": ">0",
+        "CONDITIONAL": ">=0",
+        "BLOCK": "<0"
+      },
+      "hit_rate_delta": {
+        "APPROVE": ">=-0.05",
+        "CONDITIONAL": ">=-0.10",
+        "BLOCK": "<-0.10"
+      },
+      "agreement_rate": {
+        "APPROVE": ">=0.7",
+        "CONDITIONAL": "any",
+        "BLOCK": "N/A"
+      }
+    }
+  }
+}
