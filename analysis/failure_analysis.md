@@ -4,18 +4,18 @@
 
 ## 1. Tổng quan Benchmark
 
-|| Metric | V1 (Base) | V2 (Optimized) | Delta |
+| Metric | V1 (Base) | V2 (Optimized) | Delta |
 |--------|-----------|----------------|-------|
-|| Tổng số cases | 50 | 50 | - |
-|| Tỉ lệ Pass/Fail | 49/1 | 49/1 | - |
-|| **Avg Score (Judge)** | **4.06/5.0** | **4.03/5.0** | **-0.037** |
-|| Faithfulness | 0.8916 | 0.8728 | -0.019 |
-|| Relevancy | 0.9536 | 0.9466 | -0.007 |
-|| **Hit Rate** | **0.66** | **0.66** | **0.00** |
-|| **MRR** | **0.4797** | **0.4897** | **+0.010** |
-|| **Agreement Rate** | **0.8036** | **0.8104** | **+0.007** |
-|| Avg Latency (ms) | 8496 | 8450 | -46 |
-|| Total Cost ($) | 0.0914 | 0.0887 | -0.003 |
+| Tổng số cases | 50 | 50 | - |
+| Tỉ lệ Pass/Fail | 49/1 | 49/1 | - |
+| **Avg Score (Judge)** | **4.06/5.0** | **4.03/5.0** | **-0.037** |
+| Faithfulness | 0.8916 | 0.8728 | -0.019 |
+| Relevancy | 0.9536 | 0.9466 | -0.007 |
+| **Hit Rate** | **0.66** | **0.66** | **0.00** |
+| **MRR** | **0.4797** | **0.4897** | **+0.010** |
+| **Agreement Rate** | **0.8036** | **0.8104** | **+0.007** |
+| Avg Latency (ms) | 8496 | 8450 | -46 |
+| Total Cost ($) | 0.0914 | 0.0887 | -0.003 |
 
 **Regression Gate Decision: BLOCK**
 - V2 tụt **-0.037** điểm so với V1 (4.03 vs 4.06)
@@ -35,7 +35,7 @@
 
 > 49/50 cases PASS (score >= 3), 1 case FAIL. Phân tích dựa trên **cases có điểm thấp nhất** (bottom 10%):
 
-|| Nhóm lỗi | Số lượng | Tỉ lệ | Nguyên nhân dự kiến |
+| Nhóm lỗi | Số lượng | Tỉ lệ | Nguyên nhân dự kiến |
 |-----------|----------|--------|---------------------|
 | **Sub-optimal Retrieval** | ~15 | ~30% | Vector search trả về doc không optimal cho câu hỏi |
 | **Incomplete Answer** | ~8 | ~16% | Agent trả lời đúng nhưng thiếu chi tiết phụ |
@@ -110,20 +110,20 @@ Retrieval Quality
 
 ## 5. Kế hoạch cải tiến (Action Plan)
 
-|| # | Action Item | Priority | Status | Expected Impact |
-||---|-------------|----------|--------|-----------------|
-|| 1 | Thêm Cross-Encoder Reranking sau retrieval | **High** | Pending | +5-10% Hit Rate, +0.05 MRR |
-|| 2 | Tắt query expansion trong V2 để cải thiện faithfulness | **High** | Pending | +0.02 faithfulness, +0.02 score |
-|| 3 | Thêm Safety Filter layer (pre-generation) | Medium | Pending | +0.05 score trên adversarial |
-|| 4 | Thử semantic chunking (thay vì full context) | Medium | Pending | +5% Hit Rate |
-|| 5 | Cập nhật System Prompt mạnh hơn | Medium | Pending | +0.03 Faithfulness |
-|| 6 | Giảm top_k từ 5 → 3 để giảm noise | Low | Pending | +2% Faithfulness |
+| # | Action Item | Priority | Status | Expected Impact |
+|---|-------------|----------|--------|-----------------|
+| 1 | Thêm Cross-Encoder Reranking sau retrieval | **High** | Pending | +5-10% Hit Rate, +0.05 MRR |
+| 2 | Tắt query expansion trong V2 để cải thiện faithfulness | **High** | Pending | +0.02 faithfulness, +0.02 score |
+| 3 | Thêm Safety Filter layer (pre-generation) | Medium | Pending | +0.05 score trên adversarial |
+| 4 | Thử semantic chunking (thay vì full context) | Medium | Pending | +5% Hit Rate |
+| 5 | Cập nhật System Prompt mạnh hơn | Medium | Pending | +0.03 Faithfulness |
+| 6 | Giảm top_k từ 5 → 3 để giảm noise | Low | Pending | +2% Faithfulness |
 
 ---
 
 ## 6. Chi phí & Hiệu năng
 
-|| Metric | V1 | V2 | Target |
+| Metric | V1 | V2 | Target |
 |--------|-----|-----|--------|
 | Total Cost | $0.0914 | $0.0887 | < $10.00 |
 | Cost per Eval | $0.0018 | $0.0018 | < $0.20 |
@@ -138,7 +138,7 @@ Retrieval Quality
 
 ## 7. Regression Summary
 
-|| Decision | Criteria | Kết quả |
+| Decision | Criteria | Kết quả |
 |----------|----------|---------|
 | **BLOCK** | delta_score < 0 | delta = -0.037 |
 | Delta Score | V1=4.06, V2=4.03 | V2 worse |
@@ -158,7 +158,7 @@ V2 **rất gần CONDITIONAL** - chỉ cần +0.037 điểm. Khuyến nghị: T�
 
 ## 8. Điểm số ước tính theo GRADING_RUBRIC
 
-|| Hạng mục | Điểm tối đa | Ước tính | Ghi chú |
+| Hạng mục | Điểm tối đa | Ước tính | Ghi chú |
 |-----------|-------------|---------|---------|
 | Retrieval Evaluation | 10 | **8** | Hit Rate 66% + MRR 0.49, chưa đạt tối đa |
 | Dataset & SDG | 10 | **9** | 50 cases đa dạng, Red Teaming đầy đủ |
