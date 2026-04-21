@@ -39,7 +39,7 @@ Câu trả lời: {answer}
 
 Chỉ trả về một con số duy nhất từ 0.0 đến 1.0, ví dụ: 0.85"""
             response = client.chat.completions.create(
-                model="gpt-5.4",
+                model="gpt-4o",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0,
                 max_completion_tokens=10,
@@ -75,7 +75,7 @@ Câu trả lời: {answer}
 
 Chỉ trả về một con số duy nhất từ 0.0 đến 1.0, ví dụ: 0.85"""
             response = client.chat.completions.create(
-                model="gpt-5.4",
+                model="gpt-4o",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0,
                 max_completion_tokens=10,
@@ -103,6 +103,32 @@ Chỉ trả về một con số duy nhất từ 0.0 đến 1.0, ví dụ: 0.85""
                 relevant += 1 / (i + 1)
         return min(1.0, relevant)
 
+    async def calculate_context_recall(
+        self, expected_ids: List[str], retrieved_ids: List[str]
+    ) -> float:
+        if not expected_ids:
+            return 1.0
+        if not retrieved_ids:
+            return 0.0
+        retrieved_set = set(retrieved_ids)
+        expected_set = set(expected_ids)
+        overlap = retrieved_set & expected_set
+        return len(overlap) / len(expected_set)
+
+    def calculate_ndcg(
+        self, expected_ids: List[str], retrieved_ids: List[str], k: int = 5
+    ) -> float:
+        if not expected_ids or not retrieved_ids:
+            return 0.0
+        ideal_order = expected_ids[:k]
+        dcg = 0.0
+        for i, rid in enumerate(retrieved_ids[:k]):
+            if rid in expected_ids:
+                pos = expected_ids.index(rid)
+                dcg += 1.0 / (pos + 1) if pos < k else 0.0
+        idcg = sum(1.0 / (i + 1) for i in range(min(len(ideal_order), k)))
+        return dcg / idcg if idcg > 0 else 0.0
+
     async def calculate_ragas_metrics(
         self,
         question: str,
@@ -115,7 +141,7 @@ Chỉ trả về một con số duy nhất từ 0.0 đến 1.0, ví dụ: 0.85""
         relevancy = await self.calculate_answer_relevancy(question, answer)
 
         retrieval = {}
-        if expected_ids and retrieved_ids:
+        if expected_ids is not None and retrieved_ids is not None:
             retrieval["hit_rate"] = 1.0 if any(e in retrieved_ids for e in expected_ids) else 0.0
             mrr = 0.0
             for i, rid in enumerate(retrieved_ids):
@@ -126,7 +152,9 @@ Chỉ trả về một con số duy nhất từ 0.0 đến 1.0, ví dụ: 0.85""
             ctx_prec = await self.calculate_context_precision(
                 question, expected_ids, retrieved_ids
             )
+            ctx_recall = await self.calculate_context_recall(expected_ids, retrieved_ids)
             retrieval["context_precision"] = ctx_prec
+            retrieval["context_recall"] = ctx_recall
 
         return {
             "faithfulness": round(faithfulness, 4),

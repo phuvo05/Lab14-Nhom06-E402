@@ -10,8 +10,8 @@ load_dotenv()
 class LLMJudge:
     def __init__(
         self,
-        model_primary: str = "gpt-5.4",
-        model_secondary: str = "claude-3-5-haiku",
+        model_primary: str = "gpt-4o",
+        model_secondary: str = "claude-3-5-haiku-20241022",
     ):
         self.model_primary = model_primary
         self.model_secondary = model_secondary
